@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlq.mapper.BuildingMapper">
+    <insert id="save">
+        insert into building(name,introduction,admin_id) values(#{name},#{introduction},#{adminId});
+    </insert>
+    <update id="update">
+        update
+            building
+        set
+            name = #{name},
+            introduction = #{introduction},
+            admin_id = #{adminId}
+        where
+            id = #{id};
+    </update>
+    <delete id="deleteById">
+        delete
+        from
+            building
+        where
+            id = #{id};
+    </delete>
+
+
+    <select id="list" resultType="com.zlq.pojo.Building">
+        select
+            b.id id,b.name name,b.introduction introduction,b.admin_id adminId,a.name adminName
+        from building b,dormitory_admin a
+        where a.id = b.admin_id;
+    </select>
+    <select id="searchByName" resultType="com.zlq.pojo.Building">
+        select
+            b.id id,b.name name,b.introduction introduction,b.admin_id adminId,a.name adminName
+        from building b,dormitory_admin a
+        where a.id = b.admin_id
+            and
+                b.name like concat('%',#{value},'%');
+    </select>
+    <select id="searchByIntroduction" resultType="com.zlq.pojo.Building">
+        select
+            b.id id,b.name name,b.introduction introduction,b.admin_id adminId,a.name adminName
+        from building b,dormitory_admin a
+        where a.id = b.admin_id
+        and
+            b.introduction like concat('%',#{value},'%');
+    </select>
+    <select id="listDormitoryIdByBuildingId" resultType="java.lang.Integer">
+        select
+            d.id id
+        from building b,dormitory d
+        where b.id = d.building_id
+        and
+            b.id = #{id};
+    </select>
+</mapper>

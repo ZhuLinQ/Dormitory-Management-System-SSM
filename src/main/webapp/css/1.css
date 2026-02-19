@@ -1,0 +1,6 @@
+.blockcenter {
+  display: block; /* 独占一行 */
+  margin: 0 auto; /* 水平居中（上下边距0，左右自动） */
+  width: 180px; /* 可选，设置固定宽度更美观 */
+  padding: 8px 0;
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlq.mapper.DormitoryMapper">
+    <insert id="save">
+
+insert into dormitory(name,type,available,telephone,building_id) values(#{name},#{type},#{available},#{telephone},#{buildingId})
+    </insert>
+    <update id="addAvailable">
+        update dormitory set available = available + 1 where id = #{id}
+    </update>
+    <update id="subAvailable">
+        update dormitory set available = available - 1 where id = #{id}
+    </update>
+    <update id="transferStudent">
+        update
+        student set dormitory_id = #{dormitoryId} where id = #{studentId}
+    </update>
+    <update id="update">
+        update dormitory set name = #{name},telephone = #{telephone} where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete dormitory where id = #{id}
+    </delete>
+    <delete id="delete">
+        delete dormitory where id = #{id}
+    </delete>
+
+    <select id="availableList" resultType="Dormitory">
+        select id,name from dormitory where available > 0;
+    </select>
+    <select id="listStudentIdByDormitoryId" resultType="java.lang.Integer">
+        select student_id from student where dormitory_id = #{dormitoryId};
+    </select>
+    <select id="availableDormitoryId" resultType="java.lang.Integer">
+        select
+             id
+        from dormitory
+        where available > 0
+    </select>
+    <select id="listAll" resultType="com.zlq.pojo.Dormitory">
+        select d.id id,d.name name,d.type type,d.available available,d.telephone telephone,b.name buildingName,d.building_id buildingId
+        from dormitory d,building b
+        where d.building_id = b.id;
+    </select>
+    <select id="searchByName" resultType="com.zlq.pojo.Dormitory">
+        select d.id id,d.name name,d.type type,d.available available,d.telephone telephone,b.name buildingName,d.building_id buildingId
+        from dormitory d,building b
+        where d.building_id = b.id
+        and d.name like concat('%',#{value},'%');
+    </select>
+    <select id="searchByTelephone" resultType="com.zlq.pojo.Dormitory">
+        select d.id id,d.name name,d.type type,d.available available,d.telephone telephone,b.name buildingName,d.building_id buildingId
+        from dormitory d,building b
+        where d.building_id = b.id
+        and d.telephone like concat('%',#{value},'%');
+    </select>
+    <select id="findByBuildingId" resultType="Dormitory">
+        select id,name from dormitory where building_id = #{buildingId}
+    </select>
+
+</mapper>
